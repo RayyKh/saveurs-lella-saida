@@ -1,16 +1,9 @@
-<!-- app.component.html -->
 <div *ngIf="isLoading">
   <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
     <div class="spinner-grow text-primary" role="status"></div>
   </div>
 </div>
-<div *ngIf="!isCategoryRoute">
-  <app-navbar></app-navbar>
-  <app-accueil></app-accueil>
-  <router-outlet></router-outlet>
-  <app-footer></app-footer>
-</div>
-<div *ngIf="isCategoryRoute">
+<div *ngIf="!isLoading"> <!-- Appliquer le spinner uniquement pendant le chargement -->
   <app-navbar></app-navbar>
   <router-outlet></router-outlet>
   <app-footer></app-footer>

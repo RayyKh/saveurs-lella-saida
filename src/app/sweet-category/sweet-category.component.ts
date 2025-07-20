@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { ProductService } from '../product.service';
 
 @Component({
   selector: 'app-sweet-category',
@@ -6,20 +8,20 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./sweet-category.component.scss']
 })
 export class SweetCategoryComponent implements OnInit {
-  sweetProducts: { name: string, price: number, image: string }[] = [
-    { name: 'Makroudh', price: 15, image: 'assets/img/img3.png' },
-    { name: 'Sablé', price: 12, image: 'assets/img/img6.png' },
-    { name: 'Baklawa', price: 20, image: 'assets/img/img7.png' },
-    { name: 'Kaak Warka', price: 15, image: 'assets/img/product-3.jpg' },
-    { name: 'Kaaber Louz', price: 12, image: 'assets/img/img4.png' },
-    { name: 'Samsa', price: 20, image: 'assets/img/product-1.jpg' },
-    { name: 'Bjaouia', price: 15, image: 'assets/img/img3.png' },
-    { name: 'Mlabes', price: 12, image: 'assets/img/img6.png' },
-    { name: 'Ghraiba Homs', price: 20, image: 'assets/img/img7.png' },
-    { name: 'Kaak Warka', price: 15, image: 'assets/img/product-3.jpg' },
-    { name: 'Kaaber Louz', price: 12, image: 'assets/img/img4.png' },
-    { name: 'Samsa', price: 20, image: 'assets/img/product-1.jpg' }
-  ];
+  sweetProducts: { name: string, price: number, image: string }[] = [];
+
+  constructor(private router: Router, private productService: ProductService) {
+    this.sweetProducts = this.productService.getSweetProducts();
+  }
 
   ngOnInit(): void {}
+
+  navigateToProduct(index: number, category: string) {
+    console.log('Navigating to:', ['/product', index, category]); // Débogage
+    this.router.navigate(['/product', index, category]).then(success => {
+      if (!success) {
+        console.error('Navigation failed');
+      }
+    });
+  }
 }

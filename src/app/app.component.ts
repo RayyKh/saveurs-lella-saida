@@ -1,4 +1,3 @@
-// app.component.ts
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 
@@ -10,7 +9,7 @@ import { Router, NavigationEnd } from '@angular/router';
 export class AppComponent implements OnInit {
   title = 'patisserieLellaSaida1';
   isLoading = true;
-  isMuted: boolean[] = [true, true, true]; // Track mute state for each video
+  isMuted: boolean[] = [true, true, true];
   isCategoryRoute = false;
 
   constructor(private router: Router) {
@@ -19,6 +18,7 @@ export class AppComponent implements OnInit {
         this.isCategoryRoute = event.urlAfterRedirects === '/sweet-category' || 
                               event.urlAfterRedirects === '/salty-category' || 
                               event.urlAfterRedirects === '/gateau-category';
+        console.log('Current route:', event.urlAfterRedirects, 'isCategoryRoute:', this.isCategoryRoute); // Débogage
       }
     });
   }
@@ -28,6 +28,9 @@ export class AppComponent implements OnInit {
       this.isLoading = false;
     }, 100);
   }
+
+  // Autres méthodes (scrollToSection, toggleMute, etc.) restent inchangées
+
 
   public scrollToSection(sectionId: string) {
     const element = document.getElementById(sectionId);

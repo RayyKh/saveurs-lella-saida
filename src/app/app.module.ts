@@ -8,6 +8,10 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { SweetCategoryComponent } from './sweet-category/sweet-category.component';
 import { SaltyCategoryComponent } from './salty-category/salty-category.component';
 import { GateauCategoryComponent } from './gateau-category/gateau-category.component';
+import { ProductDetailComponent } from './product-detail/product-detail.component';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { ProductService } from './product.service';
 
 @NgModule({
   declarations: [
@@ -17,11 +21,14 @@ import { GateauCategoryComponent } from './gateau-category/gateau-category.compo
     NavbarComponent,
     SweetCategoryComponent,
     SaltyCategoryComponent,
-    GateauCategoryComponent
+    GateauCategoryComponent,
+    ProductDetailComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

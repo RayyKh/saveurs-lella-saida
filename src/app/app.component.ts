@@ -1,4 +1,6 @@
+// app.component.ts
 import { Component, OnInit } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -9,6 +11,17 @@ export class AppComponent implements OnInit {
   title = 'patisserieLellaSaida1';
   isLoading = true;
   isMuted: boolean[] = [true, true, true]; // Track mute state for each video
+  isCategoryRoute = false;
+
+  constructor(private router: Router) {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.isCategoryRoute = event.urlAfterRedirects === '/sweet-category' || 
+                              event.urlAfterRedirects === '/salty-category' || 
+                              event.urlAfterRedirects === '/gateau-category';
+      }
+    });
+  }
 
   ngOnInit() {
     setTimeout(() => {
@@ -30,4 +43,34 @@ export class AppComponent implements OnInit {
       this.isMuted[videoIndex] = video.muted;
     }
   }
-} 
+
+  public openCartModal() {
+    const modal = document.getElementById('cartModal');
+    if (modal) {
+      modal.classList.add('show');
+      modal.style.display = 'block';
+      modal.setAttribute('aria-hidden', 'false');
+    }
+  }
+
+  public closeCartModal() {
+    const modal = document.getElementById('cartModal');
+    if (modal) {
+      modal.classList.remove('show');
+      modal.style.display = 'none';
+      modal.setAttribute('aria-hidden', 'true');
+    }
+  }
+
+  public openSweetCategory() {
+    window.open(`${window.location.origin}/sweet-category`, '_blank');
+  }
+
+  public openSaltyCategory() {
+    window.open(`${window.location.origin}/salty-category`, '_blank');
+  }
+
+  public openGateauCategory() {
+    window.open(`${window.location.origin}/gateau-category`, '_blank');
+  }
+}

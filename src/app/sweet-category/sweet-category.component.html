@@ -5,16 +5,15 @@
       <h1 class="display-6 mb-4">Nos Délices Sucrés</h1>
     </div>
     <div class="row g-4">
-      <div class="col-lg-4 col-md-6 wow fadeInUp" *ngFor="let product of sweetProducts; let i = index" data-wow-delay="0.1s">
-        <div class="product-item d-flex flex-column bg-white rounded overflow-hidden h-100">
+      <div class="col-lg-4 col-md-6 wow fadeInUp" *ngFor="let subCategory of subCategories" data-wow-delay="0.1s">
+        <div class="subcategory-item d-flex flex-column bg-white rounded overflow-hidden h-100" (click)="navigateToSubCategory(subCategory)">
           <div class="text-center p-4">
-            <h3 class="mb-3">{{ product.name }}</h3>
-            <p class="mb-0 text-primary">{{ product.price }} DT</p>
+            <h3 class="mb-3">{{ subCategory }}</h3>
           </div>
           <div class="position-relative mt-auto">
-            <img class="img-fluid" [src]="product.image" alt="{{ product.name }}">
-            <div class="product-overlay">
-              <a class="btn btn-lg-square btn-outline-light rounded-circle" (click)="navigateToProduct(i, 'sweet')">
+            <img class="img-fluid" [src]="subCategoryImages[subCategory]" alt="{{ subCategory }}">
+            <div class="subcategory-overlay">
+              <a class="btn btn-lg-square btn-outline-light rounded-circle">
                 <i class="fa fa-eye text-primary"></i>
               </a>
             </div>

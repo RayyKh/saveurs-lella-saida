@@ -75,64 +75,63 @@
 </div>
 <!-- Facts End -->
 
-<!-- Video Carousel Start -->
-<div class="container my-5 wow fadeIn" data-wow-delay="0.1s">
-  <div id="videoCarousel" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-inner">
-      <div class="carousel-item active">
-        <video class="d-block mx-auto" width="800" height="450" autoplay muted loop id="video-0">
-          <source src="assets/videos/vd1.mp4" type="video/mp4">
-          Votre navigateur ne supporte pas la lecture de vidéos.
-        </video>
-        <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
-          <h2 class="text-primary mb-3">Nos Délices Artisanaux</h2>
-          <p class="text-white">Découvrez le savoir-faire de Saveurs Lella Saida.</p>
-          <button class="btn btn-primary btn-sm rounded-pill mt-2" (click)="toggleMute(0)">
-            <i class="fas" [ngClass]="isMuted[0] ? 'fa-volume-mute' : 'fa-volume-up'"></i>
-            {{ isMuted[0] ? 'Activer le son' : 'Couper le son' }}
-          </button>
+<!-- Trending & New Products Start -->
+<div class="container-xxl py-6" id="trending-products">
+  <div class="container">
+    <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+      <p class="text-primary text-uppercase mb-2">Tendances & Nouveautés</p>
+      <h1 class="display-6 mb-4">Découvrez nos produits phares et dernières créations</h1>
+    </div>
+    <div class="row g-4">
+      <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+        <div class="trending-product-card bg-white rounded shadow-sm overflow-hidden h-100">
+          <div class="position-relative">
+            <img class="img-fluid w-100" src="assets/img/samsacat.jpg" alt="Produit Tendance 1">
+            <div class="trending-overlay">
+              <a class="btn btn-primary rounded-pill" (click)="viewProductDetails('trending-1')">Voir Détails</a>
+            </div>
+          </div>
+          <div class="p-4 text-center">
+            <h4 class="mb-2">Samsa Tendance</h4>
+            <p class="text-muted mb-3">Un classique revisité avec une touche moderne.</p>
+            <span class="badge bg-primary text-white">Nouveauté</span>
+          </div>
         </div>
       </div>
-      <div class="carousel-item">
-        <video class="d-block mx-auto" width="800" height="450" autoplay muted loop id="video-1">
-          <source src="assets/videos/vd2.mp4" type="video/mp4">
-          Votre navigateur ne supporte pas la lecture de vidéos.
-        </video>
-        <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
-          <h2 class="text-primary mb-3">Pâtisseries Traditionnelles</h2>
-          <p class="text-white">Un voyage gustatif au cœur de la Tunisie.</p>
-          <button class="btn btn-primary btn-sm rounded-pill mt-2" (click)="toggleMute(1)">
-            <i class="fas" [ngClass]="isMuted[1] ? 'fa-volume-mute' : 'fa-volume-up'"></i>
-            {{ isMuted[1] ? 'Activer le son' : 'Couper le son' }}
-          </button>
+      <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+        <div class="trending-product-card bg-white rounded shadow-sm overflow-hidden h-100">
+          <div class="position-relative">
+            <img class="img-fluid w-100" src="assets/img/zitouna2.jpg" alt="Produit Tendance 2">
+            <div class="trending-overlay">
+              <a class="btn btn-primary rounded-pill" (click)="viewProductDetails('trending-2')">Voir Détails</a>
+            </div>
+          </div>
+          <div class="p-4 text-center">
+            <h4 class="mb-2">Zitouna</h4>
+            <p class="text-muted mb-3">Nouveau goût irrésistible.</p>
+            <span class="badge bg-success text-white">Tendance</span>
+          </div>
         </div>
       </div>
-      <div class="carousel-item">
-        <video class="d-block mx-auto" width="800" height="450" autoplay muted loop id="video-2">
-          <source src="assets/videos/vd3.mp4" type="video/mp4">
-          Votre navigateur ne supporte pas la lecture de vidéos.
-        </video>
-        <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
-          <h2 class="text-primary mb-3">Créations Modernes</h2>
-          <p class="text-white">L’élégance sucrée pour toutes vos occasions.</p>
-          <button class="btn btn-primary btn-sm rounded-pill mt-2" (click)="toggleMute(2)">
-            <i class="fas" [ngClass]="isMuted[2] ? 'fa-volume-mute' : 'fa-volume-up'"></i>
-            {{ isMuted[2] ? 'Activer le son' : 'Couper le son' }}
-          </button>
+      <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
+        <div class="trending-product-card bg-white rounded shadow-sm overflow-hidden h-100">
+          <div class="position-relative">
+            <img class="img-fluid w-100" src="assets/img/cakechoco.jpg" alt="Produit Tendance 3">
+            <div class="trending-overlay">
+              <a class="btn btn-primary rounded-pill" (click)="viewProductDetails('trending-3')">Voir Détails</a>
+            </div>
+          </div>
+          <div class="p-4 text-center">
+            <h4 class="mb-2">Cake au Chocolat</h4>
+            <p class="text-muted mb-3">Une nouveauté riche en saveur.</p>
+            <span class="badge bg-primary text-white">Nouveauté</span>
+          </div>
         </div>
       </div>
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#videoCarousel" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#videoCarousel" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
   </div>
 </div>
-<!-- Video Carousel End -->
+<!-- Trending & New Products End -->
 
 <!-- About Start -->
 <div id="about" class="container-xxl py-6">
@@ -141,10 +140,10 @@
       <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
         <div class="row img-twice position-relative h-100">
           <div class="col-6">
-            <img class="img-fluid rounded" src="assets/img/img1.png" alt="">
+            <img class="img-fluid rounded" src="assets/img/imgacc.jpg" alt="">
           </div>
           <div class="col-6 align-self-end">
-            <img class="img-fluid rounded" src="assets/img/img2.png" alt="">
+            <img class="img-fluid rounded" src="assets/img/imgacc2.jpg" alt="">
           </div>
         </div>
       </div>
@@ -175,7 +174,7 @@
 </div>
 <!-- About End -->
 
-<!-- accueil.component.html (section Product Start) -->
+<!-- Product Start -->
 <div id="products" class="container-xxl bg-light my-6 py-6 pt-0">
   <div class="container">
     <div class="bg-primary text-light rounded-bottom p-5 my-6 mt-0 wow fadeInUp" data-wow-delay="0.1s">
@@ -202,12 +201,11 @@
       <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
         <div class="product-item d-flex flex-column bg-white rounded overflow-hidden h-100">
           <div class="text-center p-4">
-            <div class="d-inline-block border border-primary rounded-pill px-3 mb-3">11 DT - 99 DT</div>
             <h3 class="mb-3">Gâteau</h3>
             <span>Des gâteaux raffinés, alliant créativité et tradition, pour sublimer toutes vos célébrations</span>
           </div>
           <div class="position-relative mt-auto">
-            <img class="img-fluid" src="assets/img/img6.png" alt="">
+            <img class="img-fluid" src="assets/img/gateaucategorie.jpg" alt="">
             <div class="product-overlay">
               <a class="btn btn-lg-square btn-outline-light rounded-circle" (click)="openGateauCategory()">
                 <i class="fa fa-eye text-primary"></i>
@@ -219,12 +217,11 @@
       <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
         <div class="product-item d-flex flex-column bg-white rounded overflow-hidden h-100">
           <div class="text-center p-4">
-            <div class="d-inline-block border border-primary rounded-pill pt-1 px-3 mb-3">11 DT - 99 DT</div>
             <h3 class="mb-3">Sucré</h3>
             <span>Des douceurs sucrées délicates et gourmandes, conçues pour adoucir chaque instant</span>
           </div>
           <div class="position-relative mt-auto">
-            <img class="img-fluid" src="assets/img/img3.png" alt="">
+            <img class="img-fluid" src="assets/img/sucrecategorie.jpg" alt="">
             <div class="product-overlay">
               <a class="btn btn-lg-square btn-outline-light rounded-circle" (click)="openSweetCategory()">
                 <i class="fa fa-eye text-primary"></i>
@@ -236,12 +233,11 @@
       <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
         <div class="product-item d-flex flex-column bg-white rounded overflow-hidden h-100">
           <div class="text-center p-4">
-            <div class="d-inline-block border border-primary rounded-pill pt-1 px-3 mb-3">10 DT - 80 DT</div>
             <h4 class="mb-3">Salé</h4>
             <span>Des délices salés savoureux, faits maison, parfaits pour éveiller vos papilles à toute heure</span>
           </div>
           <div class="position-relative mt-auto">
-            <img class="img-fluid" src="assets/img/img7.png" alt="">
+            <img class="img-fluid" src="assets/img/nossale.jpg" alt="">
             <div class="product-overlay">
               <a class="btn btn-lg-square btn-outline-light rounded-circle" (click)="openSaltyCategory()">
                 <i class="fa fa-eye text-primary"></i>
@@ -304,10 +300,10 @@
       <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
         <div class="row img-twice position-relative h-100">
           <div class="col-6">
-            <img class="img-fluid rounded" src="assets/img/service-1.jpg" alt="">
+            <img class="img-fluid rounded" src="assets/img/cakechoco.jpg" alt="">
           </div>
           <div class="col-6 align-self-end">
-            <img class="img-fluid rounded" src="assets/img/img5.png" alt="">
+            <img class="img-fluid rounded" src="assets/img/cakeamande.jpg" alt="">
           </div>
         </div>
       </div>

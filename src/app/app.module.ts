@@ -12,6 +12,8 @@ import { ProductDetailComponent } from './product-detail/product-detail.componen
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ProductService } from './product.service';
+import { CartComponent } from './cart/cart.component';
+import { CartService } from './cart.service';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,8 @@ import { ProductService } from './product.service';
     SweetCategoryComponent,
     SaltyCategoryComponent,
     GateauCategoryComponent,
-    ProductDetailComponent
+    ProductDetailComponent,
+    CartComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +33,7 @@ import { ProductService } from './product.service';
     FormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [ProductService, CartService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

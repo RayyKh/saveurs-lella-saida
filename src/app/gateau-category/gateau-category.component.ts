@@ -8,17 +8,22 @@ import { ProductService } from '../product.service';
   styleUrls: ['./gateau-category.component.scss']
 })
 export class GateauCategoryComponent implements OnInit {
-  gateauProducts: { name: string, price: number, image: string }[] = [];
+  subCategories: string[] = ['Chocolat', 'Anniversaire', 'Fruits', 'Fiançailles', 'Personnalisé'];
 
-  constructor(private router: Router, private productService: ProductService) {
-    this.gateauProducts = this.productService.getGateauProducts();
-  }
+  subCategoryImages: { [key: string]: string } = {
+    'Chocolat': 'assets/img/chocolat.jpg',
+    'Anniversaire': 'assets/img/anniversaire.jpg',
+    'Fruits': 'assets/img/fruits.jpg',
+    'Fiançailles': 'assets/img/fiancailles.jpg',
+    'Personnalisé': 'assets/img/personnalise.jpg'
+  };
+
+  constructor(private router: Router, private productService: ProductService) {}
 
   ngOnInit(): void {}
 
-  navigateToProduct(index: number, category: string) {
-    console.log('Navigating to:', ['/product', index, category]); // Débogage
-    this.router.navigate(['/product', index, category]).then(success => {
+  navigateToSubCategory(subCategory: string) {
+    this.router.navigate(['/product', 'gateau', subCategory]).then(success => {
       if (!success) {
         console.error('Navigation failed');
       }

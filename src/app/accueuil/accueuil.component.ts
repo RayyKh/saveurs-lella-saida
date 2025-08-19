@@ -1,14 +1,13 @@
-// accueil.component.ts
 import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-accueil',
-  templateUrl: './accueuil.component.html',
+  templateUrl: './accueuil.component.html', // Correction du nom de fichier
   styleUrls: ['./accueuil.component.scss']
 })
 export class AccueilComponent implements OnInit {
   isLoading = true;
-  isMuted: boolean[] = [true, true, true]; // Track mute state for each video
+  isMuted: boolean[] = [true, true, true]; // Track mute state for each video (non utilisé maintenant)
 
   ngOnInit(): void {
     setTimeout(() => {
@@ -17,11 +16,7 @@ export class AccueilComponent implements OnInit {
   }
 
   public toggleMute(videoIndex: number) {
-    const video = document.getElementById(`video-${videoIndex}`) as HTMLVideoElement;
-    if (video) {
-      video.muted = !video.muted;
-      this.isMuted[videoIndex] = video.muted;
-    }
+    // Non utilisé après suppression des vidéos
   }
 
   public closeCartModal() {
@@ -43,5 +38,12 @@ export class AccueilComponent implements OnInit {
 
   public openGateauCategory() {
     window.open(`${window.location.origin}/gateau-category`, '_blank');
+  }
+
+  public viewProductDetails(productId: string) {
+    // Placeholder pour ouvrir une page de détails ou une modale
+    console.log(`Voir détails du produit: ${productId}`);
+    // Vous pouvez ajouter une navigation vers une page de détails ici, par exemple:
+    // this.router.navigate([`/product-details/${productId}`]);
   }
 }

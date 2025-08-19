@@ -1,107 +1,180 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../product.service';
 import { HttpClient } from '@angular/common/http';
+import { CartService, CartItem } from '../cart.service';
+import { trigger, state, style, animate, transition } from '@angular/animations';
 
 @Component({
   selector: 'app-product-detail',
   templateUrl: './product-detail.component.html',
-  styleUrls: ['./product-detail.component.scss']
+  styleUrls: ['./product-detail.component.scss'],
+  animations: [
+    trigger('fadeAnimation', [
+      state('void', style({ opacity: 0, transform: 'translate(-50%, -20px)' })),
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translate(-50%, -20px)' }),
+        animate('0.3s ease-in', style({ opacity: 1, transform: 'translate(-50%, 0)' }))
+      ]),
+      transition(':leave', [
+        animate('0.3s ease-out', style({ opacity: 0, transform: 'translate(-50%, -20px)' }))
+      ])
+    ])
+  ]
 })
 export class ProductDetailComponent implements OnInit {
-  productIndex: number = 0;
-  categoryType: string = '';
-  productName: string = '';
-  productDescription: string = '';
-  productPrice: number = 0;
-  productImage: string = '';
-  quantity: number = 1;
+  category: string = '';
+  subCategory: string = '';
+  products: { id: number, name: string, price: number, image: string, subCategory?: string }[] = [];
+  cart: CartItem[] = [];
   firstName: string = '';
   lastName: string = '';
   address: string = '';
   phone: string = '';
+  isPickup: boolean = false;
+  isCashOnDelivery: boolean = false;
+  showSuccessToast: boolean = false;
+  showOrderModal: boolean = false;
+  selectedGrammages: { [key: string]: number } = {};
 
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
-    private http: HttpClient
-  ) {}
-
-  ngOnInit(): void {
-    const indexParam = this.route.snapshot.paramMap.get('index');
-    this.productIndex = indexParam ? +indexParam : 0; // Vérifie si indexParam existe avant conversion
-
-    const categoryParam = this.route.snapshot.paramMap.get('category');
-    this.categoryType = categoryParam || ''; // Valeur par défaut si null/undefined
-    console.log('Params:', { index: this.productIndex, category: this.categoryType }); // Débogage
-
-    let products: { name: string, price: number, image: string }[] = [];
-    if (this.categoryType === 'sweet') {
-      products = this.productService.getSweetProducts();
-    } else if (this.categoryType === 'salty') {
-      products = this.productService.getSaltyProducts();
-    } else if (this.categoryType === 'gateau') {
-      products = this.productService.getGateauProducts();
-    } else {
-      console.error('Category not recognized:', this.categoryType);
-      return; // Arrête l'exécution si la catégorie est invalide
-    }
-
-    if (this.productIndex >= 0 && this.productIndex < products.length) {
-      const product = products[this.productIndex];
-      this.productName = product.name;
-      this.productPrice = product.price;
-      this.productImage = product.image;
-      this.productDescription = `${this.categoryType === 'salty' ? 'Savoureux' : this.categoryType === 'gateau' ? 'Élégant' : 'Délicieux'} ${product.name} préparé avec soin.`;
-    } else {
-      console.error('Index out of bounds:', this.productIndex, 'for category:', this.categoryType, 'Length:', products.length);
-    }
+    private router: Router,
+    private http: HttpClient,
+    private cartService: CartService
+  ) {
+    this.cartService.cart$.subscribe((cart: CartItem[]) => {
+      this.cart = cart;
+    });
   }
 
-  addToCart() {
-    const modal = document.getElementById('orderModal');
-    if (modal) {
-      modal.classList.add('show');
-      modal.style.display = 'block';
-      modal.setAttribute('aria-hidden', 'false');
-      console.log('Modal should be visible now');
+  ngOnInit(): void {
+    this.route.paramMap.subscribe(params => {
+      this.category = params.get('category') || '';
+      this.subCategory = params.get('subCategory') || '';
+      if (this.category === 'cart-order') {
+        this.cart = this.cartService.getCart();
+        this.openOrderModal();
+      } else if (this.subCategory) {
+        this.products = this.productService.getProductsBySubCategory(this.category, this.subCategory);
+      } else {
+        this.products = this.productService.getProductsByCategory(this.category);
+      }
+      if (this.products.length === 0) {
+        console.warn(`No products found for category: ${this.category}, subCategory: ${this.subCategory}`);
+      }
+    });
+  }
+
+  onGrammageChange(event: Event, product: { id: number, name: string, price: number, image: string, subCategory?: string }) {
+    const selectElement = event.target as HTMLSelectElement;
+    this.selectedGrammages[product.name] = Number(selectElement.value);
+  }
+
+  addToCart(product: { id: number, name: string, price: number, image: string, subCategory?: string }) {
+    const quantity = this.selectedGrammages[product.name] || (product.subCategory === 'Cakes' ? 1 : 500);
+    const cartItem: CartItem = {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      quantity: quantity,
+      originalPrice: product.price,
+      image: product.image,
+      subCategory: product.subCategory
+    };
+    this.cartService.addToCart(cartItem);
+    this.showSuccessToast = true;
+    setTimeout(() => {
+      this.showSuccessToast = false;
+    }, 3000);
+    this.selectedGrammages[product.name] = product.subCategory === 'Cakes' ? 1 : 500;
+  }
+
+  calculateTotalPrice(item: CartItem): number {
+    const baseUnit = item.subCategory === 'Cakes' ? 1 : 500; // Poulet, Thon, Viande, and Ghraiba use 500g
+    return (item.quantity / baseUnit) * item.price;
+  }
+
+  continueShopping() {
+    if (this.subCategory) {
+      this.router.navigate([`/product/${this.category}/${this.subCategory}`]);
+    } else if (this.category) {
+      this.router.navigate([`/${this.category}-category`]);
     } else {
-      console.error('Modal element not found');
+      this.router.navigate(['/']);
     }
+    this.closeSuccessToast();
+  }
+
+  goToCart() {
+    this.router.navigate(['/cart']);
+    this.closeSuccessToast();
+  }
+
+  openOrderModal() {
+    if (this.cart.length === 0) {
+      alert('Votre panier est vide.');
+      this.router.navigate(['/']);
+      return;
+    }
+    this.showOrderModal = true;
   }
 
   closeOrderModal() {
-    const modal = document.getElementById('orderModal');
-    if (modal) {
-      modal.classList.remove('show');
-      modal.style.display = 'none';
-      modal.setAttribute('aria-hidden', 'true');
-    }
+    this.showOrderModal = false;
+    this.firstName = '';
+    this.lastName = '';
+    this.address = '';
+    this.phone = '';
+    this.isPickup = false;
+    this.isCashOnDelivery = false;
+  }
+
+  closeSuccessToast() {
+    this.showSuccessToast = false;
   }
 
   submitOrder(form: any) {
     if (form.valid) {
       const orderData = {
-        productName: this.productName,
-        productId: this.productIndex,
-        quantity: this.quantity,
         firstName: this.firstName,
         lastName: this.lastName,
         address: this.address,
-        phone: this.phone
+        phone: this.phone,
+        deliveryOption: this.isPickup ? 'Retrait de la boutique' : 'Livraison à domicile',
+        items: this.cart.map(item => ({
+          productName: item.name,
+          productId: item.id,
+          quantity: item.quantity,
+          price: item.price,
+          subCategory: item.subCategory
+        }))
       };
-
-      this.http.post('http://localhost:8081/api/orders', orderData).subscribe(
-        response => {
+      this.http.post('http://localhost:8081/api/orders', orderData).subscribe({
+        next: (response) => {
+          console.log('Order submitted successfully:', response);
           alert('Commande envoyée avec succès !');
+          this.cartService.clearCart();
           this.closeOrderModal();
-          form.resetForm();
+          this.router.navigate(['/']);
         },
-        error => {
-          alert('Erreur lors de l\'envoi de la commande.');
-          console.error('Error:', error);
+        error: (error) => {
+          console.error('Error submitting order:', error);
+          alert('Erreur lors de l\'envoi de la commande. Veuillez réessayer.');
         }
-      );
+      });
+    } else {
+      alert('Veuillez remplir tous les champs requis.');
+    }
+  }
+
+  getGrammageOptions(subCategory?: string): number[] {
+    if (subCategory === 'Cakes') {
+      return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    } else {
+      // Poulet, Thon, Viande, and Ghraiba use 500g-based options
+      return [500, 750, 1000, 1500, 2000, 2500, 5000];
     }
   }
 }

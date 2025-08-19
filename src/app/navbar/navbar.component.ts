@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { CartService, CartItem } from '../cart.service';
 
 @Component({
   selector: 'app-navbar',
@@ -6,7 +8,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
-  constructor() {}
+  cartCount: number = 0;
+
+  constructor(private router: Router, private cartService: CartService) {
+    this.cartService.cart$.subscribe((cart: CartItem[]) => {
+      this.cartCount = cart.reduce((sum: number, item: CartItem) => sum + item.quantity, 0);
+    });
+  }
 
   ngOnInit(): void {}
 
@@ -18,20 +26,6 @@ export class NavbarComponent implements OnInit {
   }
 
   public openCartModal() {
-    const modal = document.getElementById('cartModal');
-    if (modal) {
-      modal.classList.add('show');
-      modal.style.display = 'block';
-      modal.setAttribute('aria-hidden', 'false');
-    }
-  }
-
-  public closeCartModal() {
-    const modal = document.getElementById('cartModal');
-    if (modal) {
-      modal.classList.remove('show');
-      modal.style.display = 'none';
-      modal.setAttribute('aria-hidden', 'true');
-    }
+    this.router.navigate(['/cart']);
   }
 }

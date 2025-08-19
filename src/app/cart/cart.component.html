@@ -1,0 +1,21 @@
+<div class="container-xxl bg-light my-6 py-6">
+  <div class="container">
+    <h1 class="text-center display-6 mb-4">Panier</h1>
+    <div class="row g-4" *ngFor="let item of cart">
+      <div class="col-12 d-flex align-items-center">
+        <img class="img-fluid me-3" [src]="item.image" alt="{{ item.name }}" style="width: 100px; height: 100px;">
+        <div class="flex-grow-1">
+          <h4>{{ item.name }}</h4>
+          <p>Quantité: {{ item.quantity }} {{ item.subCategory === 'Cakes' ? 'pièce(s)' : 'g' }}</p>
+          <p>Prix: {{ calculateTotalPrice(item) }} DT</p>
+        </div>
+        <button class="btn btn-danger" (click)="removeItem(item.name)">
+          <i class="fas fa-trash"></i> Supprimer
+        </button>
+      </div>
+    </div>
+    <div class="text-center mt-5">
+      <button class="btn btn-success" (click)="confirmOrder()" [disabled]="cart.length === 0">Confirmer la commande</button>
+    </div>
+  </div>
+</div>

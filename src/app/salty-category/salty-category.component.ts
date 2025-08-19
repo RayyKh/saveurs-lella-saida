@@ -8,17 +8,23 @@ import { ProductService } from '../product.service';
   styleUrls: ['./salty-category.component.scss']
 })
 export class SaltyCategoryComponent implements OnInit {
-  saltyProducts: { name: string, price: number, image: string }[] = [];
+  subCategories: string[] = ['Poulet', 'Thon', 'Viande', 'Fruit de mer'];
 
-  constructor(private router: Router, private productService: ProductService) {
-    this.saltyProducts = this.productService.getSaltyProducts();
-  }
+  // Objet associant chaque sous-catégorie à une image
+  subCategoryImages: { [key: string]: string } = {
+    'Poulet': 'assets/img/poulet.jpg',
+    'Thon': 'assets/img/thon.jpg',
+    'Viande': 'assets/img/tarteviande.jpg',
+    'Fruit de mer': 'assets/img/fruitdemer.jpg'
+  };
+
+  constructor(private router: Router, private productService: ProductService) {}
 
   ngOnInit(): void {}
 
-  navigateToProduct(index: number, category: string) {
-    console.log('Navigating to:', ['/product', index, category]); // Débogage
-    this.router.navigate(['/product', index, category]).then(success => {
+  navigateToSubCategory(subCategory: string) {
+    console.log('Navigating to sub-category:', ['/product', 'salty', subCategory]);
+    this.router.navigate(['/product', 'salty', subCategory]).then(success => {
       if (!success) {
         console.error('Navigation failed');
       }

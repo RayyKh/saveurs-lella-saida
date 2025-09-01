@@ -31,7 +31,6 @@ export class AppComponent implements OnInit {
 
   // Autres méthodes (scrollToSection, toggleMute, etc.) restent inchangées
 
-
   public scrollToSection(sectionId: string) {
     const element = document.getElementById(sectionId);
     if (element) {
@@ -65,15 +64,21 @@ export class AppComponent implements OnInit {
     }
   }
 
-  public openSweetCategory() {
-    window.open(`${window.location.origin}/sweet-category`, '_blank');
-  }
+  public openSweetCategory(event: Event) {
+  event.preventDefault();
+  event.stopPropagation();
+  this.router.navigate(['/sweet-category']);
+}
 
-  public openSaltyCategory() {
-    window.open(`${window.location.origin}/salty-category`, '_blank');
-  }
+public openSaltyCategory(event: Event) {
+  event.preventDefault();
+  event.stopPropagation();
+  this.router.navigate(['/salty-category']);
+}
 
-  public openGateauCategory() {
-    window.open(`${window.location.origin}/gateau-category`, '_blank');
-  }
+public openGateauCategory(event: Event) {
+  event.preventDefault();
+  event.stopPropagation();
+  this.router.navigate(['/gateau-category']);
+}
 }

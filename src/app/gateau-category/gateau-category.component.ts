@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { ProductService } from '../product.service';
 
 @Component({
@@ -8,25 +7,35 @@ import { ProductService } from '../product.service';
   styleUrls: ['./gateau-category.component.scss']
 })
 export class GateauCategoryComponent implements OnInit {
-  subCategories: string[] = ['Chocolat', 'Anniversaire', 'Fruits', 'Fiançailles', 'Personnalisé'];
-
+  subCategories: string[] = ['Anniversaire', 'Fiançailles', 'Personnalisé'];
   subCategoryImages: { [key: string]: string } = {
-    'Chocolat': 'assets/img/chocolat.jpg',
-    'Anniversaire': 'assets/img/anniversaire.jpg',
-    'Fruits': 'assets/img/fruits.jpg',
-    'Fiançailles': 'assets/img/fiancailles.jpg',
-    'Personnalisé': 'assets/img/personnalise.jpg'
+    'Anniversaire': 'assets/img/anniv.jpg',
+    'Fiançailles': 'assets/img/fiancaille.jpg',
+    'Personnalisé': 'assets/img/perso.jpg'
   };
+  subCategoryDescriptions: { subCategory: string, sizes: { size: number, price: number }[], contact: string }[] = [];
+  flippedCards: { [key: string]: boolean } = {};
 
-  constructor(private router: Router, private productService: ProductService) {}
+  constructor(private productService: ProductService) {}
 
-  ngOnInit(): void {}
-
-  navigateToSubCategory(subCategory: string) {
-    this.router.navigate(['/product', 'gateau', subCategory]).then(success => {
-      if (!success) {
-        console.error('Navigation failed');
-      }
+  ngOnInit(): void {
+    console.log('SubCategories:', this.subCategories);
+    this.subCategoryDescriptions = this.productService.getSubCategoryDescriptions();
+    console.log('SubCategory Descriptions:', this.subCategoryDescriptions);
+    this.subCategories.forEach(subCategory => {
+      this.flippedCards[subCategory] = false;
     });
+    console.log('Flipped Cards:', this.flippedCards);
+  }
+
+  toggleFlip(subCategory: string) {
+    this.flippedCards[subCategory] = !this.flippedCards[subCategory];
+    console.log(`Toggled flip for ${subCategory}:`, this.flippedCards[subCategory]);
+  }
+
+  getDescription(subCategory: string) {
+    const desc = this.subCategoryDescriptions.find(d => d.subCategory === subCategory);
+    console.log(`Description for ${subCategory}:`, desc);
+    return desc;
   }
 }

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../product.service';
-import { HttpClient } from '@angular/common/http';
 import { CartService, CartItem } from '../cart.service';
 import { trigger, state, style, animate, transition } from '@angular/animations';
+import { OrderService } from '../order.service'; // Importer le nouveau service
 
 @Component({
   selector: 'app-product-detail',
@@ -41,8 +41,8 @@ export class ProductDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private productService: ProductService,
     private router: Router,
-    private http: HttpClient,
-    private cartService: CartService
+    private cartService: CartService,
+    private orderService: OrderService // Injecter le service OrderService
   ) {
     this.cartService.cart$.subscribe((cart: CartItem[]) => {
       this.cart = cart;
@@ -151,7 +151,7 @@ export class ProductDetailComponent implements OnInit {
           subCategory: item.subCategory
         }))
       };
-      this.http.post('http://localhost:8081/api/orders', orderData).subscribe({
+      this.orderService.submitOrder(orderData).subscribe({
         next: (response) => {
           console.log('Order submitted successfully:', response);
           alert('Commande envoyée avec succès !');
@@ -161,7 +161,7 @@ export class ProductDetailComponent implements OnInit {
         },
         error: (error) => {
           console.error('Error submitting order:', error);
-          alert('Erreur lors de l\'envoi de la commande. Veuillez réessayer.');
+          alert('Erreur lors de l\'envoi de la commande. Veuillez réessayer. Détail : ' + (error.status ? error.status + ' - ' + error.statusText : error.message));
         }
       });
     } else {

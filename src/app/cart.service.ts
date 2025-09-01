@@ -20,6 +20,15 @@ export class CartService {
 
   cart$ = this.cartSubject.asObservable();
 
+  constructor() {
+    // Récupérer le panier depuis localStorage au démarrage
+    const savedCart = localStorage.getItem('cart');
+    if (savedCart) {
+      this.cart = JSON.parse(savedCart);
+      this.cartSubject.next([...this.cart]); // Mettre à jour le sujet avec les données sauvegardées
+    }
+  }
+
   addToCart(item: CartItem) {
     const cartItem = this.cart.find(i => i.name === item.name);
     if (cartItem) {
@@ -27,6 +36,7 @@ export class CartService {
     } else {
       this.cart.push({ ...item });
     }
+    this.saveCart(); // Sauvegarder après ajout
     this.cartSubject.next([...this.cart]);
   }
 
@@ -36,11 +46,17 @@ export class CartService {
 
   removeFromCart(itemName: string) {
     this.cart = this.cart.filter(item => item.name !== itemName);
+    this.saveCart(); // Sauvegarder après suppression
     this.cartSubject.next([...this.cart]);
   }
 
   clearCart() {
     this.cart = [];
+    this.saveCart(); // Sauvegarder après vidage
     this.cartSubject.next([]);
+  }
+
+  private saveCart() {
+    localStorage.setItem('cart', JSON.stringify(this.cart)); // Sauvegarder dans localStorage
   }
 }

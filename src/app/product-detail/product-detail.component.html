@@ -1,9 +1,9 @@
-<div class="container-xxl bg-light my-6 py-6">
+<div class="container-xxl bg-light my-6 py-6 overflow-x-hidden">
   <div class="container">
     <h1 class="text-center display-5 mb-5 text-primary fw-bold">
       {{ category === 'cart-order' ? 'Confirmation de la commande' : 'Produits - ' + (subCategory || category | titlecase) }}
     </h1>
-    <div class="row row-cols-1 row-cols-md-3 g-5" *ngIf="category !== 'cart-order'; else cartOrder">
+    <div class="row row-cols-1 row-cols-md-3 g-5" *ngIf="category !== 'cart-order'; ">
       <div class="col" *ngFor="let product of products">
         <div class="product-card">
           <div class="product-image-container">
@@ -12,7 +12,7 @@
           </div>
           <div class="product-details">
             <h4 class="product-name">{{ product.name }}</h4>
-            <p class="product-price">Prix de base: <span class="text-success">{{ product.price }} DT</span> (par {{ subCategory === 'Cakes' ? 'pièce' : '500g' }})</p>
+            <p class="product-price">Prix de base: <span class="text-success">{{ product.price }} DT</span> (par {{ subCategory === 'Cakes' ? 'pièce' : '100g' }})</p>
           </div>
           <div class="product-actions d-flex align-items-center flex-column">
             <select class="form-select me-3 custom-select" [id]="'grammage-' + product.name" (change)="onGrammageChange($event, product)" required>
@@ -29,24 +29,7 @@
       </div>
     </div>
 
-    <ng-template #cartOrder>
-      <div class="cart-order-summary">
-        <h3>Récapitulatif de la commande</h3>
-        <div class="row g-4" *ngFor="let item of cart">
-          <div class="col-12 d-flex align-items-center">
-            <img class="img-fluid me-3" [src]="item.image" alt="{{ item.name }}" style="width: 100px; height: 100px;">
-            <div class="flex-grow-1">
-              <h4>{{ item.name }}</h4>
-              <p>Quantité: {{ item.quantity }} {{ item.subCategory === 'Cakes' ? 'pièce(s)' : 'g' }}</p>
-              <p>Prix: {{ calculateTotalPrice(item) | number:'1.2-2' }} DT</p>
-            </div>
-          </div>
-        </div>
-        <div class="text-center mt-5">
-          <button class="btn btn-primary" (click)="openOrderModal()">Passer la commande</button>
-        </div>
-      </div>
-    </ng-template>
+    
 
     <!-- Notification personnalisée -->
     <div class="custom-toast" *ngIf="showSuccessToast" [@fadeAnimation]>
@@ -84,7 +67,7 @@
               <div class="mb-3">
                 <div class="form-check">
                   <input type="radio" class="form-check-input" id="deliveryHome" name="deliveryOption" [(ngModel)]="isPickup" [value]="false" required>
-                  <label class="form-check-label" for="deliveryHome">Livraison à domicile</label>
+                  <label class="form-check-label" for="deliveryHome">Livraison à domicile (Sucré seulement)</label>
                 </div>
                 <div class="form-check">
                   <input type="radio" class="form-check-input" id="pickupStore" name="deliveryOption" [(ngModel)]="isPickup" [value]="true" required>

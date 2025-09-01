@@ -2,7 +2,7 @@
   <a routerLink="/" class="navbar-brand ms-4 ms-lg-0 d-flex align-items-center">
     <img class="img-fluid rounded-circle shadow-sm custom-logo" src="assets/img/logo.jpg" alt="">
   </a>
-  <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+  <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -13,7 +13,7 @@
       <a href="#services" class="nav-item nav-link" (click)="scrollToSection('services')">Services</a>
       <a href="#contact" class="nav-item nav-link" (click)="scrollToSection('contact')">Contact</a>
     </div>
-    <div class="d-none d-lg-flex align-items-center">
+    <div class="d-flex align-items-center mobile-cart">
       <div class="flex-shrink-0 btn-lg-square border border-light rounded-circle me-3">
         <i class="fa fa-phone text-warning"></i>
       </div>
@@ -23,7 +23,7 @@
       </div>
       <div class="flex-shrink-0 btn-lg-square border border-light rounded-circle position-relative" (click)="openCartModal()">
         <i class="fa fa-shopping-cart text-warning"></i>
-        
+        <span *ngIf="cartCount > 0" class="badge bg-danger rounded-pill position-absolute top-0 end-0"></span>
       </div>
     </div>
   </div>

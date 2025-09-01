@@ -15,11 +15,16 @@ const routes: Routes = [
   { path: 'product/:category/:subCategory', component: ProductDetailComponent },
   { path: 'product/:category', component: ProductDetailComponent },
   { path: 'cart', component: CartComponent },
-  { path: 'product/cart-order', component: ProductDetailComponent }
+  { path: 'product/cart-order', component: ProductDetailComponent },
+  { path: '', redirectTo: '/', pathMatch: 'full' }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {
+    scrollPositionRestoration: 'enabled', // Réinitialise la position de défilement à (0, 0)
+    anchorScrolling: 'enabled', // Gère les ancrages si nécessaire
+    initialNavigation: 'enabledBlocking' // Assure une navigation initiale fluide
+  })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

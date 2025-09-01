@@ -4,18 +4,34 @@
       <p class="text-primary text-uppercase mb-2">Catégorie</p>
       <h1 class="display-6 mb-4">Nos Gâteaux</h1>
     </div>
-    <div class="row g-4">
-      <div class="col-lg-3 col-md-6 wow fadeInUp" *ngFor="let subCategory of subCategories; let i = index" [attr.data-wow-delay]="(i * 0.2 + 0.1) + 's'">
-        <div class="product-item d-flex flex-column bg-white rounded overflow-hidden h-100">
-          <div class="text-center p-4">
-            <h3 class="mb-3">{{ subCategory }}</h3>
-          </div>
-          <div class="position-relative mt-auto">
-            <img class="img-fluid" [src]="subCategoryImages[subCategory]" alt="{{ subCategory }}">
-            <div class="product-overlay">
-              <a class="btn btn-lg-square btn-outline-light rounded-circle" (click)="navigateToSubCategory(subCategory)">
-                <i class="fa fa-eye text-primary"></i>
-              </a>
+    
+    <div class="row g-4 justify-content-center">
+      <div class="col-12 col-md-4 wow fadeInUp" *ngFor="let subCategory of subCategories; let i = index" [attr.data-wow-delay]="(i * 0.2 + 0.1) + 's'">
+        <div class="product-item rounded overflow-hidden h-100" (click)="toggleFlip(subCategory)">
+          <div class="card-flip" [ngClass]="{'flipped': flippedCards[subCategory]}">
+            <!-- Front Side -->
+            <div class="card-front">
+              <div class="text-center p-4">
+                <h2 class="mb-3">{{ subCategory }}</h2>
+              </div>
+              <div class="position-relative">
+                <img class="img-fluid w-100" [src]="subCategoryImages[subCategory]" alt="{{ subCategory }}">
+              </div>
+            </div>
+            <!-- Back Side -->
+            <div class="card-back">
+              <div class="text-center p-4">
+                <h2 class="mb-3">{{ subCategory }}</h2>
+                <div *ngIf="getDescription(subCategory) as desc; else noDescription">
+                  <p *ngFor="let size of desc.sizes">
+                    {{ size.size }} cm: {{ size.price }} TND
+                  </p>
+                  <p class="mt-3">{{ desc.contact }}</p>
+                </div>
+                <ng-template #noDescription>
+                  <p>No description available.</p>
+                </ng-template>
+              </div>
             </div>
           </div>
         </div>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router'; // Importer Router
 
 @Component({
   selector: 'app-accueil',
@@ -8,6 +9,8 @@ import { Component, OnInit } from '@angular/core';
 export class AccueilComponent implements OnInit {
   isLoading = true;
   isMuted: boolean[] = [true, true, true]; // Track mute state for each video (non utilisé maintenant)
+
+  constructor(private router: Router) {} // Injecter Router
 
   ngOnInit(): void {
     setTimeout(() => {
@@ -28,16 +31,22 @@ export class AccueilComponent implements OnInit {
     }
   }
 
-  public openSweetCategory() {
-    window.open(`${window.location.origin}/sweet-category`, '_blank');
+  public openSweetCategory(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.router.navigate(['/sweet-category']);
   }
 
-  public openSaltyCategory() {
-    window.open(`${window.location.origin}/salty-category`, '_blank');
+  public openSaltyCategory(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.router.navigate(['/salty-category']);
   }
 
-  public openGateauCategory() {
-    window.open(`${window.location.origin}/gateau-category`, '_blank');
+  public openGateauCategory(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.router.navigate(['/gateau-category']);
   }
 
   public viewProductDetails(productId: string) {
